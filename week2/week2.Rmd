@@ -1,0 +1,49 @@
+---
+title: "week2 example"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+library(DT)
+datatable(iris)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+tx5 <- jsonlite::fromJSON("https://www.dropbox.com/s/9yxq2g1a5vdywu6/tx5.json?dl=1")
+
+library(plotly)
+plot_ly(tx5, x = ~date, y = ~median) %>%
+  add_lines(linetype = ~city) -> plt
+plt
+```
+
+### Chart C
+
+```{r}
+library(leaflet)
+
+
+m <- 
+    leaflet() %>%
+    setView(lat=24.944551, lng=121.369482, zoom=12) %>%
+    addTiles()
+m
+```
+
