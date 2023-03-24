@@ -2,7 +2,7 @@ library(readr)
 
 #saving container
 bigMac2 = list()
-big_mac_raw_index <- read_csv("https://raw.githubusercontent.com/TheEconomist/big-mac-data/master/output-data/big-mac-raw-index.csv")
+big_mac_raw_index <- readr::read_csv("https://raw.githubusercontent.com/TheEconomist/big-mac-data/master/output-data/big-mac-raw-index.csv")
 
 # split by date for later convenience
 big_mac_raw_index |>
@@ -54,7 +54,7 @@ prototype
 trace1 = prototype$x$data[[1]]
 
 #
-plot_ly() |> 
+plot_ly() |>
   add_trace(
   )
 

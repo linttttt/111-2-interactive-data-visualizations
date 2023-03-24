@@ -53,12 +53,17 @@ library(plotly)
 plotly::ggplotly(gg3Point$make()) -> prototype3
 prototype3
 
+trace1 = prototype3$x$data[[1]]
+trace2 = prototype3$x$data[[2]]
 trace3 = prototype3$x$data[[3]]
-trace3$text = NULL
-tt = append(list(p0),trace3)
-do.call("add_trace", tt) -> p0
-p0
 
+trace1$hoverinfo = "skip"
+trace2$hoverinfo = "skip"
+trace3$hoverinfo = "skip"
+plot_ly() |>
+  econIDV::do_add_trace(trace1) |>
+  econIDV::do_add_trace(trace2) |>
+  econIDV::do_add_trace(trace3)
 
 bigMac3 = list()
 big_mac_raw_index |>
@@ -97,8 +102,26 @@ gg3Line$make()
 plotly::ggplotly(gg3Line$make()) -> prototype3Line
 prototype3Line
 
-trace3 = prototype3Line$x$data[[1]]
-trace3$text = "Taiwan"
-tt = append(list(p0),trace3)
-do.call("add_trace", tt) -> p1
-p1
+
+trace1 = prototype3$x$data[[1]]
+trace2 = prototype3$x$data[[2]]
+trace3 = prototype3$x$data[[3]]
+trace1$hoverinfo = "skip"
+trace2$hoverinfo = "skip"
+trace3$hoverinfo = "skip"
+plot_ly() |>
+  econIDV::do_add_trace(trace1) |>
+  econIDV::do_add_trace(trace2) |>
+  econIDV::do_add_trace(trace3)
+
+
+trace4 = prototype3Line$x$data[[1]]
+trace4$text = "Taiwan"
+plot_ly() |>
+  econIDV::do_add_trace(trace4)
+
+plot_ly() |>
+  econIDV::do_add_trace(trace1) |>
+  econIDV::do_add_trace(trace2) |>
+  econIDV::do_add_trace(trace3) |>
+  econIDV::do_add_trace(trace4)
