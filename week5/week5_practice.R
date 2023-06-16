@@ -1,3 +1,11 @@
+# pt = econIDV::PlotlyTools()
+#
+# pt$query_layout$`Y Axis`() -> qq
+# qq("layout")
+#
+# pt$query_trace$Scatter() -> qq
+# qq("line")
+
 plotly::ggplotly(gg3Point$make()) |>
   plotly::plotly_build() -> prototype3point
 plotly::ggplotly(gg4Line$make()) |>
@@ -15,6 +23,8 @@ graph5Info = list(
     config = prototype4Line$x$config
     )
   ) |> saveRDS("graph5Info.Rds")
+
+
 
 graph5Info = readRDS("graph5Info.Rds")
 
@@ -166,6 +176,11 @@ plotly::plot_ly() |>
     )
   }
 
+pt = econIDV::PlotlyTools()
+pt$query_layout$`Color,modebar,hover,and others`() -> qq
+qq("modebar")
+pt$query_Scatter() -> qq2
+qq2("hover")
 #conbine line and point(line highlight)
 plotly::plot_ly() |>
   plotly::add_trace(
@@ -180,7 +195,7 @@ plotly::plot_ly() |>
     showlegend = graph5Info$point$traces[[1]]$showlegend,
     xaxis = graph5Info$point$traces[[1]]$xaxis,
     yaxis = graph5Info$point$traces[[1]]$yaxis,
-    hoverinfo = "skip",
+    hoverinfo = "none",
     frame = graph5Info$point$traces[[1]]$frame
    ) |>
   plotly::add_trace(
@@ -229,7 +244,12 @@ plotly::plot_ly() |>
     legend = graph5Info$point$layout$legend,
     hovermode = graph5Info$point$layout$hovermode,
     barmode = graph5Info$point$layout$barmode
-  ) -> graph5Info$highlight
+  ) |>
+  plotly::layout(
+    modebar = list(
+      remove = c("autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout")
+    )
+  )
 
 graph5Info$highlight |>
   plotly::api_create() -> link

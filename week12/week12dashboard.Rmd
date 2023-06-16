@@ -1,0 +1,27 @@
+---
+title: "week12"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+```{r setup, include=FALSE}
+library(flexdashboard)
+chart1=readRDS("./chart1.Rds")
+chart2=readRDS("./chart2.Rds")
+```
+-----------
+
+### Info
+
+
+```{r chart1}
+chart1
+```
+
+### Map
+
+```{r chart2}
+chart2
+```
+

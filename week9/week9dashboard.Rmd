@@ -1,0 +1,64 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+chartC=readRDS("./chartC.Rds")
+chartB=readRDS("./chartB.Rds")
+chartA=readRDS("./chartA.Rds")
+bigMacData=readRDS("../week8/bigMacData.Rds")
+```
+
+
+```{r}
+htmltools::tags$script(
+  id="chartB-tracemap",
+  type="application/json",
+  chartB$tracemap |> jsonlite::toJSON()
+)
+htmltools::tags$script(
+  id="chartC-tracemap",
+  type="application/json",
+  chartC$tracemap |> jsonlite::toJSON()
+)
+
+htmltools::includeScript("./js/helper.js")
+```
+
+
+
+Column {data-width=150}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+chartA$tb0
+```
+
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+chartB$highlightWithSplit  |>
+  htmlwidgets::onRender(readLines("chartB.js"))
+# chartB$highlight |>
+#   econIDV::get_traceInfo()
+```
+
+### Chart C
+
+```{r}
+chartC$complete$trace4highlight$withScatterGL_highlightGrey |>
+  htmlwidgets::onRender(readLines("chartC.js"))
+```
+

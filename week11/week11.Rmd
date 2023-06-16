@@ -1,0 +1,52 @@
+---
+title: "week 11"
+output: html_document
+date: "2023-04-24"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# JS
+
+## Global environment
+
+-   All js inside `<script>` tag will be executed in a global scope. Therefore, include the `htmltools::includeScript("... .js")` inside flexdashboard Rmd.
+
+-   A stand-alone (獨自一行) declaration with `var` inside a global scoped js makes the variable declared a global scoped object. Suppose inside a global scoped js:
+
+    ```         
+    var aIsGlobal; // stand-alone
+
+    function myfun(){
+       var bIsNotGlobal; // part of a function block
+    }
+    ```
+
+    > `var` is either global scoped (can be accessed everywhere in your code) or function scoped (only can be accessed within its associated function body.
+
+## Collective global object
+
+It is good to keep all required global information within an object, say `app` , then use proper interfaces to categorize each information.
+
+-   chartBtracemap: generated each time when plotly draw finishes
+    -   has to be in the global environment since other functions access it not as an argument input.
+
+        ```         
+        //Execute in the global environment a declaration with var
+        // turns the object into a global scoped object
+        var chartBtracemap = Object();
+        ```
+
+```         
+var chartBtracemap;
+function createChartBMapping(chartData){
+  var chartBtracemap = Object()
+  // Object is mutable within a function in JS
+  chartData.map((x, i)=>{
+    chartBtracemap[x.name] = i
+  })
+  // no need to assigned map result to chartBtracemap itself
+}
+```
