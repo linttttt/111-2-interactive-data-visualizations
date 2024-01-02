@@ -1,0 +1,71 @@
+---
+title: "Ubike"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(leaflet)
+
+```
+
+```{r}
+ubikeMap = readRDS("../week14/ubikeMap.rds")
+htmltools::tags$script(
+  id="youbike-data",
+  type="application/json",
+  ubikeMap$dataMerged[,c("lat","lng")] |> jsonlite::toJSON(auto_unbox = T)
+)
+
+htmltools::includeScript("./js/init.js")
+htmltools::includeScript("./js/helper.js")
+htmltools::includeScript("./js/DOMready.js")
+```
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+leaflet(ubikeMap$dataMerged) |>
+        setView(121.5288805, 25.0418781, zoom = 14) |>
+        addProviderTiles(
+            providers$CartoDB.Positron
+        ) |>
+        addCircleMarkers(
+            lng = ~lng, lat = ~lat,
+            radius = 4,
+            popup = ~glue::glue('<a href="https://www.google.com/maps/@{lat},{lng},15z">click me</a>'),
+            # color = ~pal(type),
+            stroke = FALSE, fillOpacity = 0.7
+        ) |>
+        addEasyButton(easyButton(
+            icon = "fa-crosshairs", title = "Locate Me",
+            onClick = JS("function(btn, map){
+                   myMap = map;
+                   map.locate({setView: true}); }")
+        )) -> m
+m
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+htmltools::div(id="map", style="height:100%")
+```
+
+
+
+
+```{js}
+
+```
+

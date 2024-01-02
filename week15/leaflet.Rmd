@@ -1,0 +1,63 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+library(leaflet)
+m = leaflet() %>% setView(lng=121.5, lat=25.05, zoom=13) 
+m = m |> addTiles()
+m = m |> leaflet::addCircleMarkers(lng=121.5, lat=25.05,radius = 4,
+            popup = glue::glue('<a href="https://www.google.com/maps/@25.05,121.5,15z">click me</a>'),
+            stroke = FALSE, fillOpacity = 0.7)
+m
+```
+
+```{r, eval=FALSE, include=FALSE}
+m |> econIDV::LeafletTools() -> lf
+lf$calls[[1]]()
+lf$calls[[2]]()
+
+# lf$allCalls() |> clipr::write_clip()
+```
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+htmltools::div(
+  id="map", style="height:100%;"
+)
+```
+
+```{js}
+// initiate map
+m = L.map("map").setView([25.05,121.5],13)
+
+//tile layer
+t = L.tileLayer(...["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}])
+t.addTo(m)
+// markers
+// addCircleMarkers
+args={"lat":25.05,"lng":121.5,"radius":10,"markerOptions":{"radius":10,"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},"popupContent":"taipei","popupOptions":{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true}}
+latLng = L.latLng(args.lat,args.lng)
+mk = L.circleMarker(latLng, args.markerOptions)
+mk.bindPopup(args.popupContent,args.popupOptions)
+mk.addTo(m)
+```
+
